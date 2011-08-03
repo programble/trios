@@ -1,7 +1,7 @@
 global loader
 global stack_ptr
 
-extern kmain ; kmain.c
+extern main ; main.cpp
 
 ; Multiboot
 MODULEALIGN equ 1<<0
@@ -26,7 +26,7 @@ loader:
     push eax ; Multiboot magic
     push ebx ; Miltiboot info
 
-    call kmain ; Call C kernel
+    call main ; Call C++ kernel
 
     cli
 

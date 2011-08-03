@@ -19,9 +19,9 @@ qemu-kernel: kernel
 	qemu $(QEMUFLAGS) -kernel $(KERNEL)
 
 clean:
-	rm -f $(COBJECTS)
-	rm -f $(AOBJECTS)
-	rm -f $(COBJECTS:%.o=%.d)
+	rm -f $(CXXOBJECTS)
+	rm -f $(ASMOBJECTS)
+	rm -f $(CXXDEPFILES)
 	rm -f $(KERNEL)
 	rm -f $(ISO)
 	rm -rf iso/

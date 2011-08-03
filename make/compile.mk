@@ -1,34 +1,39 @@
-CC=clang
-ASM=nasm
-LD=ld
+CXX = clang++
+ASM = nasm
+LD = ld
 
-KERNEL=trios.elf
+TARGET = debug
 
-override CINCLUDES += -Iinclude/
-override CWARNINGS += -Wall -Wextra -Wunreachable-code -Wcast-qual -Wcast-align -Wswitch-enum -Wmissing-noreturn -Wwrite-strings -Wundef -Wpacked -Wredundant-decls -Winline -Wdisabled-optimization -Wbad-function-cast
-# TODO: Separate debug options
-override CFLAGS += -m32 -std=c99 -nostdinc -ffreestanding -fno-builtin -MMD -ggdb -DDEBUG -O0
+KERNEL = trios.elf
 
-override ASFLAGS += -f elf
+override CXXINCLUDES += -Iinclude/
+override CXXWARNINGS += -Wall -Wextra -Wunreachable-code -Wcast-qual -Wcast-align -Wswitch-enum -Wmissing-noreturn -Wwrite-strings -Wundef -Wpacked -Wredundant-decls -Winline -Wdisabled-optimization
+override CXXFLAGS += -m32 -nostdinc -ffreestanding -fno-builtin -MMD
+
+ifeq ($(TARGET),debug)
+override CXXFLAGS += -ggdb -DDEBUG -O0
+endif
+
+override ASMFLAGS += -f elf
 
 override LDFLAGS += -melf_i386 -nostdlib -T linker.ld
 
 # Find all sources
-CSOURCES := $(shell find src/ -name '*.c')
-ASOURCES := $(shell find src/asm/ -name '*.asm')
+CXXSOURCES := $(shell find src/ -name '*.cpp')
+ASMSOURCES := $(shell find src/asm/ -name '*.asm')
 
-COBJECTS := $(CSOURCES:%.c=%.o)
-AOBJECTS := $(ASOURCES:%.asm=%.o)
+CXXOBJECTS := $(CXXSOURCES:%.cpp=%.o)
+ASMOBJECTS := $(ASMSOURCES:%.asm=%.o)
 
 # Grab generated header dependencies
--include $(COBJECTS:%.o=%.d)
+CXXDEPFILES := $(CXXOBJECTS:%.o=%.d)
+-include $(CXXDEPFILES)
 
-# Linking
-$(KERNEL): $(AOBJECTS) $(COBJECTS)
-	$(LD) $(LDFLAGS) $(AOBJECTS) $(COBJECTS) -o $@
+$(KERNEL): $(ASMOBJECTS) $(CXXOBJECTS)
+	$(LD) $(LDFLAGS) $^ -o $@
 
 src/asm/%.o: src/asm/%.asm
-	$(ASM) $(ASFLAGS) $< -o $@
+	$(ASM) $(ASMFLAGS) $< -o $@
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(CWARNINGS) $(CINCLUDES) -c $< -o $@
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(CXXWARNINGS) $(CXXINCLUDES) -c $< -o $@
