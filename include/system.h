@@ -12,4 +12,9 @@ namespace Ports {
     void out(u16 port, u8 data);
 }
 
+namespace Interrupts {
+    inline void enable() { __asm__ __volatile__("sti"); }
+    inline void disable() { __asm__ __volatile__("cli"); }
+}
+
 #endif
