@@ -3,13 +3,16 @@
 
 #include <types.h>
 #include <modifiers.h>
-
-#define asm __asm__ __volatile__
+#include <macros.h>
 
 noreturn halt();
 noreturn reboot();
 
-namespace Ports {
+noreturn _panic(const string message, const string function, const string file, const string line);
+#define panic(x) _panic(x, __PRETTY_FUNCTION__, __FILE__, MACRO_STRING(__LINE__))
+#define assert(x,m) if (!(x)) _panic("assert failed: " #x "\n" m, __PRETTY_FUNCTION__, __FILE__, MACRO_STRING(__LINE__))
+
+namespace Port {
     inline u8 in(u16 port)
     {
         u8 ret;

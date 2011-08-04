@@ -12,6 +12,4 @@ typedef signed long long s64;
 
 #define string char*
 
-#define NULL ((void*) 0)
-
 #endif
