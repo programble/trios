@@ -19,11 +19,11 @@ noreturn reboot()
     halt();
 }
 
-bool recursive_panic = false;
-
 noreturn _panic(const string message, const string function, const string file, const string line)
 {
     Interrupts::disable();
+
+    static bool recursive_panic = false;
     if (recursive_panic)
         halt();
     recursive_panic = true;
