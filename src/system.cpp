@@ -12,7 +12,7 @@ noreturn reboot()
     while (x & 0x02)
         x = Ports::in(0x64);
     Ports::out(0x64, 0xFE);
-    while (true) halt();
+    halt();
 }
 
 namespace Ports
