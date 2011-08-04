@@ -1,5 +1,9 @@
 #include <system.h>
 
+#include <devices/output/text.h>
+
+using namespace Devices::Output::Text;
+
 noreturn halt()
 {
     while (true)
@@ -24,7 +28,15 @@ noreturn _panic(const string message, const string function, const string file, 
         halt();
     recursive_panic = true;
 
-    // TODO: Output panic message
+    print("\n === GOOD NEWS EVERYONE! === \n\n");
+    print(message);
+    print("\n\n");
+    print(function);
+    print("@");
+    print(file);
+    print(":");
+    print(line);
+    print("\n\npress the any key to reboot...");
 
     // Simple keypress probing
     u8 init_scancode = Port::in(0x60);
