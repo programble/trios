@@ -1,5 +1,4 @@
-#ifndef _MULTIBOOT_H_
-#define _MULTIBOOT_H_
+#pragma once
 
 #include <types.h>
 
@@ -55,5 +54,3 @@ typedef struct
     u8 framebuffer_type;
     u8 color_info[6];
 } multiboot_header;
-
-#endif

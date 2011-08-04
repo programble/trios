@@ -1,5 +1,4 @@
-#ifndef _SYSTEM_H_
-#define _SYSTEM_H_
+#pragma once
 
 #include <types.h>
 #include <modifiers.h>
@@ -29,5 +28,3 @@ namespace Interrupts {
     inline void enable() { asm("sti"); }
     inline void disable() { asm("cli"); }
 }
-
-#endif
