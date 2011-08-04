@@ -9,6 +9,7 @@ KERNEL = trios.elf
 override CXXINCLUDES += -Iinclude/
 override CXXWARNINGS += -Wall -Wextra -Wunreachable-code -Wcast-qual -Wcast-align -Wswitch-enum -Wmissing-noreturn -Wwrite-strings -Wundef -Wpacked -Wredundant-decls -Winline -Wdisabled-optimization
 override CXXFLAGS += -m32 -nostdinc -ffreestanding -fno-builtin -MMD
+CXXACTION = -c
 
 ifeq ($(TARGET),debug)
 override CXXFLAGS += -ggdb -DDEBUG -O0
@@ -29,6 +30,9 @@ ASMOBJECTS := $(ASMSOURCES:%.asm=%.o)
 CXXDEPFILES := $(CXXOBJECTS:%.o=%.d)
 -include $(CXXDEPFILES)
 
+# No link
+objects: $(ASMOBJECTS) $(CXXOBJECTS)
+
 $(KERNEL): $(ASMOBJECTS) $(CXXOBJECTS)
 	$(LD) $(LDFLAGS) $^ -o $@
 
@@ -36,4 +40,4 @@ src/asm/%.o: src/asm/%.asm
 	$(ASM) $(ASMFLAGS) $< -o $@
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(CXXWARNINGS) $(CXXINCLUDES) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(CXXWARNINGS) $(CXXINCLUDES) $(CXXACTION) $< -o $@
