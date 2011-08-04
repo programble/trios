@@ -4,17 +4,27 @@
 #include <types.h>
 #include <modifiers.h>
 
+#define asm __asm__ __volatile__
+
 noreturn halt();
 noreturn reboot();
 
 namespace Ports {
-    u8 in(u16 port);
-    void out(u16 port, u8 data);
+    inline u8 in(u16 port)
+    {
+        u8 ret;
+        asm("inb %1, %0" : "=a" (ret) : "dN" (port));
+        return ret;
+    }
+    inline void out(u16 port, u8 data)
+    {
+        asm("outb %1, %0" : : "dN" (port), "a" (data));
+    }
 }
 
 namespace Interrupts {
-    inline void enable() { __asm__ __volatile__("sti"); }
-    inline void disable() { __asm__ __volatile__("cli"); }
+    inline void enable() { asm("sti"); }
+    inline void disable() { asm("cli"); }
 }
 
 #endif
