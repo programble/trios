@@ -17,7 +17,7 @@ endif
 
 override ASMFLAGS += -f elf
 
-override LDFLAGS += -melf_i386 -nostdlib -T linker.ld
+override LDFLAGS += -melf_i386 -nostdlib -T build/linker.ld
 
 # Find all sources
 CXXSOURCES := $(shell find src/ -name '*.cpp')

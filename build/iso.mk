@@ -30,7 +30,7 @@ iso/boot/grub/stage2_eltorito: $(STAGE2)
 	@mkdir -p iso/boot/grub/
 	cp $< $@
 
-iso/boot/grub/menu.lst: menu.lst
+iso/boot/grub/menu.lst: build/menu.lst
 	@mkdir -p iso/boot/grub/
 	cp $< $@
 	echo "kernel /boot/$(KERNEL)" >> $@
@@ -43,7 +43,7 @@ iso/boot/isolinux/mboot.c32: $(ISOLINUXMBOOTC32)
 	@mkdir -p iso/boot/isolinux
 	cp $< $@
 
-iso/boot/isolinux/isolinux.cfg: isolinux.cfg
+iso/boot/isolinux/isolinux.cfg: build/isolinux.cfg
 	@mkdir -p iso/boot/isolinux
 	cp $< $@
 	echo "APPEND /boot/$(KERNEL)" >> $@

@@ -1,9 +1,9 @@
 # Build ISO by default
 all: Makefile iso
 
-include make/compile.mk
-include make/iso.mk
-include make/emulation.mk
+include build/compile.mk
+include build/iso.mk
+include build/emulation.mk
 
 # Aliases
 kernel: $(KERNEL)
