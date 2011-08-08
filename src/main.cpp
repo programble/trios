@@ -3,6 +3,7 @@
 #include <devices/output/text.h>
 #include <devices/output/text/serial.h>
 #include <devices/output/text/console.h>
+#include <interrupts/gdt.h>
 
 using namespace Devices::Output::Text;
 
@@ -13,6 +14,8 @@ noreturn main(multiboot_header *multiboot, u32 magic)
 
     Devices::Output::Text::Serial::init();
     Devices::Output::Text::Console::init();
+
+    Interrupts::Gdt::init();
 
     print("booted with ");
     print(multiboot->bootloader_name);
